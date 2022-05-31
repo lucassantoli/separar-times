@@ -10,6 +10,6 @@ git init
 git add -A
 git commit -m 'deploy'
 
-git push -f git@github.com:lucassantoli/wordle-biblia.git master:gh-pages
+git push -f git@github.com:lucassantoli/separar-times.git master:gh-pages
 
 cd -

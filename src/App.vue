@@ -30,26 +30,29 @@
         <span class="right" v-if="forca">Força</span>
       </div>
 
-      <div :class="['container-input-atleta', forca ? 'three-columns' : 'two-columns']">
-        <label for="input-atleta">Jogador #{{ atletas.length + 1 }} :</label>
-        <div class="container-input-atleta">
-          <input type="text" id="input-atleta" class="input-atleta" v-model="nome" />
+      <form v-on:submit.prevent="addUser">
+        <div :class="['container-input-atleta', forca ? 'three-columns' : 'two-columns']">
+          <label for="input-atleta">Jogador #{{ atletas.length + 1 }} :</label>
+          <div class="container-input-atleta">
+            <input type="text" id="input-atleta" class="input-atleta" v-model="nome" />
+          </div>
+          <select
+            v-if="forca"
+            type="text"
+            id="input-atleta"
+            class="input-atleta"
+            v-model="forcaJogador"
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
         </div>
-        <select
-          v-if="forca"
-          type="text"
-          id="input-atleta"
-          class="input-atleta"
-          v-model="forcaJogador"
-        >
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
-      </div>
-      <button @click="addUser" :disabled="montando" :class="[montando ? 'disabled' : '']">
-        Adicionar
-      </button>
+        <input type="submit" hidden />
+        <button @click="addUser" :disabled="montando" :class="[montando ? 'disabled' : '']">
+          Adicionar
+        </button>
+      </form>
 
       <div class="horizontal-rule bottom"></div>
 
@@ -88,7 +91,18 @@ export default {
     forca: false,
     forcaJogador: 1,
     nome: "",
-    atletas: [],
+    atletas: [
+      //   { nome: "A", forcaJogador: 1 },
+      //   { nome: "B", forcaJogador: 1 },
+      //   { nome: "C", forcaJogador: 1 },
+      //   { nome: "D", forcaJogador: 1 },
+      //   { nome: "E", forcaJogador: 1 },
+      //   { nome: "F", forcaJogador: 1 },
+      //   { nome: "G", forcaJogador: 1 },
+      //   { nome: "H", forcaJogador: 1 },
+      //   { nome: "I", forcaJogador: 1 },
+      //   { nome: "J", forcaJogador: 1 },
+    ],
     hideForca: false,
     tamtime: 1,
     montando: false,
@@ -120,50 +134,46 @@ export default {
       this.atletas.push({ nome, forcaJogador });
       this.forcaJogador = 1;
       this.nome = "";
+      return false;
     },
     montarTime: function () {
       this.montando = true;
       this.newAtletas = [...this.atletas];
       this.newAtletas = this.shuffle(this.newAtletas);
-      const nTimes = Math.floor(this.newAtletas.length / this.tamtime);
-      this.resultado = Array(nTimes);
-      if (this.forca) {
-        const fortes = this.newAtletas.filter((atleta) => atleta.forcaJogador == 3);
-        const medios = this.newAtletas.filter((atleta) => atleta.forcaJogador == 2);
-        const fracos = this.newAtletas.filter((atleta) => atleta.forcaJogador == 1);
+      //   if (this.forca) {
+      //     const fortes = this.newAtletas.filter((atleta) => atleta.forcaJogador == 3);
+      //     const medios = this.newAtletas.filter((atleta) => atleta.forcaJogador == 2);
+      //     const fracos = this.newAtletas.filter((atleta) => atleta.forcaJogador == 1);
 
-        let contFortes = 0;
-        let contMedios = 0;
-        let contFracos = 0;
+      //     let contFortes = 0;
+      //     let contMedios = 0;
+      //     let contFracos = 0;
 
-        let cont = 0;
-        while (contFortes < fortes.length) {
-          this.resultado[cont % nTimes].push(fortes[contFortes]);
-          contFortes++;
-          cont++;
-        }
+      //     let cont = 0;
+      //     while (contFortes < fortes.length) {
+      //       this.resultado[cont % nTimes].push(fortes[contFortes]);
+      //       contFortes++;
+      //       cont++;
+      //     }
 
-        while (contMedios < medios.length) {
-          this.resultado[cont % nTimes].push(medios[contMedios]);
-          contMedios++;
-          cont++;
-        }
+      //     while (contMedios < medios.length) {
+      //       this.resultado[cont % nTimes].push(medios[contMedios]);
+      //       contMedios++;
+      //       cont++;
+      //     }
 
-        while (contFracos < fracos.length) {
-          this.resultado[cont % nTimes].push(fracos[contFracos]);
-          contFracos++;
-          cont++;
-        }
-      } else {
-        var chunks = [],
-          i = 0,
-          n = this.newAtletas.length;
-        while (i < n) {
-          chunks.push(this.newAtletas.slice(i, (i += this.tamtime)));
-        }
-        this.resultado = chunks;
-        console.log(chunks);
+      //     while (contFracos < fracos.length) {
+      //       this.resultado[cont % nTimes].push(fracos[contFracos]);
+      //       contFracos++;
+      //       cont++;
+      //     }
+      //   } else {
+      const chunkSize = parseInt(this.tamtime);
+      for (let i = 0; i < this.newAtletas.length; i += chunkSize) {
+        const chunk = this.newAtletas.slice(i, i + chunkSize);
+        this.resultado.push(chunk);
       }
+      //   }
     },
   },
 };
@@ -318,5 +328,8 @@ button.disabled {
   padding: 1rem;
   color: black;
   border-radius: 8px;
+}
+.time .cada-um p {
+  margin: 0;
 }
 </style>
