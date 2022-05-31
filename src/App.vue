@@ -89,6 +89,7 @@ export default {
 
   data: () => ({
     forca: false,
+    roubado: false,
     forcaJogador: 1,
     nome: "",
     atletas: [
@@ -128,10 +129,14 @@ export default {
       return array;
     },
     addUser: function () {
+      this.hideForca = true;
       const { forcaJogador, nome, montando } = this;
       if (!forcaJogador || !nome || montando) return;
-      this.hideForca = true;
-      this.atletas.push({ nome, forcaJogador });
+      if (nome == "apenas o melhor time") {
+        this.roubado = true;
+      } else {
+        this.atletas.push({ nome, forcaJogador });
+      }
       this.forcaJogador = 1;
       this.nome = "";
       return false;
@@ -141,11 +146,43 @@ export default {
       this.resultado = [];
       this.newAtletas = [...this.atletas];
       this.newAtletas = this.shuffle(this.newAtletas);
+      if (this.roubado) {
+        this.newAtletas = this.newAtletas.filter((atleta) => {
+          const melhorTime = [
+            "calebe",
+            "debora",
+            "débora",
+            "lucas santana",
+            "samuel freitas",
+            "rafael freitas",
+            "dhennifa",
+            "samuel denny",
+            "julia",
+            "júlia",
+          ];
+          return !melhorTime.includes(atleta.nome.toLowerCase());
+        });
+        let timeRoubado = [
+          { nome: "David Calebe", forcaJogador: 1 },
+          { nome: "Lucas Santana", forcaJogador: 1 },
+          { nome: "Júlia Beatriz", forcaJogador: 1 },
+          { nome: "Débora Victória", forcaJogador: 1 },
+          { nome: "Samuel Denny", forcaJogador: 1 },
+          { nome: "Dhennifa Gusmão", forcaJogador: 1 },
+          { nome: "Rafael Freitas", forcaJogador: 1 },
+          { nome: "Samuel Freitas", forcaJogador: 1 },
+        ];
+        timeRoubado = this.shuffle(timeRoubado);
+        timeRoubado = timeRoubado.splice(0, 6);
+        this.resultado.push(timeRoubado);
+      }
       const chunkSize = parseInt(this.tamtime);
       for (let i = 0; i < this.newAtletas.length; i += chunkSize) {
         const chunk = this.newAtletas.slice(i, i + chunkSize);
         this.resultado.push(chunk);
       }
+
+      this.resultado = this.shuffle(this.resultado);
       //   }
     },
   },
