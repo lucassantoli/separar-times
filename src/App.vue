@@ -138,36 +138,9 @@ export default {
     },
     montarTime: function () {
       this.montando = true;
+      this.resultado = [];
       this.newAtletas = [...this.atletas];
       this.newAtletas = this.shuffle(this.newAtletas);
-      //   if (this.forca) {
-      //     const fortes = this.newAtletas.filter((atleta) => atleta.forcaJogador == 3);
-      //     const medios = this.newAtletas.filter((atleta) => atleta.forcaJogador == 2);
-      //     const fracos = this.newAtletas.filter((atleta) => atleta.forcaJogador == 1);
-
-      //     let contFortes = 0;
-      //     let contMedios = 0;
-      //     let contFracos = 0;
-
-      //     let cont = 0;
-      //     while (contFortes < fortes.length) {
-      //       this.resultado[cont % nTimes].push(fortes[contFortes]);
-      //       contFortes++;
-      //       cont++;
-      //     }
-
-      //     while (contMedios < medios.length) {
-      //       this.resultado[cont % nTimes].push(medios[contMedios]);
-      //       contMedios++;
-      //       cont++;
-      //     }
-
-      //     while (contFracos < fracos.length) {
-      //       this.resultado[cont % nTimes].push(fracos[contFracos]);
-      //       contFracos++;
-      //       cont++;
-      //     }
-      //   } else {
       const chunkSize = parseInt(this.tamtime);
       for (let i = 0; i < this.newAtletas.length; i += chunkSize) {
         const chunk = this.newAtletas.slice(i, i + chunkSize);
