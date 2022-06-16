@@ -138,13 +138,13 @@
         Montar time
       </button>
 
-      <button
+      <!-- <button
         @click="() => buildTeams(true)"
         :disabled="players.length == 0"
         :class="[players.length == 0 ? 'disabled' : '']"
       >
         Montar time sem posições
-      </button>
+      </button> -->
 
       <div class="horizontal-rule bottom"></div>
 
@@ -152,9 +152,36 @@
         <div class="team" v-for="(team, index) in teams" :key="index">
           <div class="first-line">
             <h5>Time {{ index + 1 }}</h5>
-            <h5>Força: {{team.reduce((sum,player) =>  player.sub ? sum : sum + player.score, 0).toFixed(2)}}</h5>
+            <h5>
+              Força:
+              {{
+                team
+                  .reduce(
+                    (sum, player) => (player.sub ? sum : sum + player.score),
+                    0
+                  )
+                  .toFixed(2)
+              }}
+            </h5>
           </div>
           <div class="each" v-for="(player, index) in team" :key="index">
+            <p :class="['player', player.sub ? 'sub' : '']">
+              {{ player.name }}
+            </p>
+            <p :class="['player right', player.sub ? 'sub' : '']">
+              {{ player.position }}
+            </p>
+            <p :class="['player right', player.sub ? 'sub' : '']">
+              {{ player.score.toFixed(2) }}
+            </p>
+          </div>
+        </div>
+
+        <div class="team" v-if="sub.length > 0">
+          <div class="first-line">
+            <h5>Substitutos</h5>
+          </div>
+          <div class="each" v-for="(player, index) in sub" :key="index">
             <p :class="['player', player.sub ? 'sub' : '']">
               {{ player.name }}
             </p>
@@ -188,9 +215,10 @@ export default {
       LV: 1,
       RC: 1,
     },
-    playersAdded: 0,//20,
+    playersAdded: 0, //20,
     totalStrength: 0,
     teams: [],
+    sub: [],
     players: {
       DF: [],
       PT: [],
@@ -311,7 +339,6 @@ export default {
     buildTeams: function (simple) {
       const nTeams = Math.floor(this.playersAdded / 6);
 
-
       let playersDF = this.shuffle([...this.players.DF]);
       let playersPT = this.shuffle([...this.players.PT]);
       let playersLV = this.shuffle([...this.players.LV]);
@@ -344,15 +371,20 @@ export default {
       }
 
       let remain = [...playersLV, ...playersPT, ...playersDF, ...playersLB];
+      remain.sort((A, B) => parseInt(A.score) - parseInt(B.score));
+      let sub = [];
       if (simple) {
         while (remain.length) {
           if (teams[contTeam].length >= 6) {
             remain[0].sub = true;
-          }
-          teams[contTeam++].push(remain[0]);
-          remain.shift();
+            sub.push(remain[0]);
+          } else {
+            remain[0].sub = false;
+            teams[contTeam++].push(remain[0]);
 
-          contTeam = contTeam % nTeams;
+            contTeam = contTeam % nTeams;
+          }
+          remain.shift();
         }
       } else {
         //var result = equalTeams(remain);
@@ -367,19 +399,22 @@ export default {
         //     "<br>&rarr; team strength = " + result.strengths[t] + "<br><br>"
         //   );
         // }
-        remain.sort((A,B)=> parseInt(A.score) - parseInt(B.score))
-        
+
         while (remain.length) {
           if (teams[contTeam].length >= 6) {
             remain[0].sub = true;
-          }
-          teams[contTeam++].push(remain[0]);
-          remain.shift();
+            sub.push(remain[0]);
+          } else {
+            remain[0].sub = false;
+            teams[contTeam++].push(remain[0]);
 
-          contTeam = contTeam % nTeams;
+            contTeam = contTeam % nTeams;
+          }
+          remain.shift();
         }
       }
       this.teams = teams;
+      this.sub = sub;
     },
   },
 };
