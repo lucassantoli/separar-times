@@ -1,0 +1,170 @@
+* {
+  font-family: "Sora", sans-serif;
+  margin: 0;
+}
+
+body {
+  background: rgb(30, 41, 59);
+}
+
+h1 {
+  font-size: 32px;
+  text-align: center;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 800;
+  margin: 1rem 0;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  max-width: 500px;
+  color: white;
+  margin: auto;
+  margin-top: 5rem;
+}
+
+.horizontal-rule {
+  height: 2px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.horizontal-rule.bottom {
+  margin: 2rem 0;
+}
+
+select,
+.input-atleta input {
+  border: none;
+  height: 100%;
+  background-color: white;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.container-input-atleta {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-atleta {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  width: 100%;
+  min-height: 30px;
+  align-items: center;
+}
+
+button {
+  margin-top: 1rem;
+  width: 100%;
+  border: none;
+  background: white;
+  color: black;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+button.delete {
+  padding: 0;
+  margin-top: 0;
+}
+
+button.disabled {
+  color: #777;
+  background: #aaa;
+}
+
+.display-atletas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.display-atletas {
+  background: white;
+  color: black;
+  padding: .5rem;
+  border-radius: .5rem;
+}
+
+.display-atletas {
+  border: solid 1px rgb(30, 41, 59);
+  border-collapse: collapse;
+  border-spacing: 0;
+  font: normal 13px Arial, sans-serif;
+}
+.display-atletas table {
+  overflow: hidden;
+}
+.display-atletas thead th {
+  background-color: rgb(30, 41, 59);
+  border: solid 1px rgb(30, 41, 59);
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+.display-atletas tbody td {
+  border: solid 1px rgb(30, 41, 59);
+  color: #333;
+  padding: 10px;
+  text-shadow: 1px 1px 1px #fff;
+}
+
+.container-table {
+  display: block;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+td,th {
+  padding: 2px !important;
+  font-size: 12px !important;
+}
+
+.teams-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.team {
+  background-color: white;
+  color: black;
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+}
+
+.team .first-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.team .each {
+  display: grid;
+  grid-template-columns: 5fr 1fr 1fr;
+}
+
+.team .each p.right {
+  text-align: right;
+}
+.team .each p.sub {
+  color: rgb(209, 57, 57)
+}
